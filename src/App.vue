@@ -1,26 +1,51 @@
 <template>
-  <!-- <div id="app"> -->
   <v-app id="app">
-    <h3>Array:</h3>
-    <p v-for="item in array" :key="item.message">{{ item }}</p>
-
-    <h3>Min from d3:</h3>
-    <p>{{ minFromD3 }}</p>
-
-    <h3>Mean from d3:</h3>
-    <p>{{ meanFromD3 }}</p>
-
-    <h3>Max from d3:</h3>
-    <p>{{ maxFromD3 }}</p>
-
     <v-container>
-      <v-card class="ml-10 mr-10 mb-10" elevation="2" outlined>
-        <h3>Graph with d3:</h3>
+
+      <v-card elevation="2" outlined>
+        <v-card-title
+          ><v-icon>mdi-chart-line</v-icon> Graph with d3:</v-card-title
+        >
         <div id="cool-graph"></div>
+                <v-row>
+            <v-col cols="12" sm="4">
+              <v-card-text><span class="font-weight-bold">Min:</span> {{ minFromD3 }}</v-card-text>
+            </v-col>
+            <v-col cols="12" sm="4">
+              <v-card-text><span class="font-weight-bold">Mean:</span> {{ meanFromD3 }}</v-card-text>
+            </v-col>
+            <v-col cols="12" sm="4">
+              <v-card-text><span class="font-weight-bold">Max:</span> {{ maxFromD3 }}</v-card-text>
+            </v-col>
+          </v-row>
+        <v-card-text class="pt-0"
+          >This line chart displays an x-axis slanted tick for each day. The
+          y-axis is from the lowest data value divided by 1.25 and reaches to
+          the highest data value.
+        </v-card-text>
+      </v-card>
+
+      <v-card elevation="2" outlined class="mt-10">
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left pl-0">
+                  <v-card-title>Data</v-card-title>
+                  <v-card-subtitle>({{ array.length }} items)</v-card-subtitle>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in array" :key="item.value">
+                <td>{{ item }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </v-card>
     </v-container>
   </v-app>
-  <!-- </div> -->
 </template>
 
 
