@@ -29,7 +29,7 @@
         <v-simple-table>
           <template v-slot:default>
             <thead>
-              <tr>
+              <tr class="grey lighten-3">
                 <th class="text-left pl-0">
                   <v-card-title>Data</v-card-title>
                   <v-card-subtitle>({{ array.length }} items)</v-card-subtitle>
@@ -99,6 +99,7 @@ export default {
 
       // graph vars
       let margin = { top: 20, right: 30, bottom: 30, left: 40 };
+      let strokeWidth = 1.5;
       let height = 100;
       let width = 600;
 
@@ -111,8 +112,8 @@ export default {
       let svg = d3
         .select("#cool-graph")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom);
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 600 100")
 
       // X AXIS
       let x = d3
@@ -122,7 +123,7 @@ export default {
             return d.date;
           })
         )
-        .range([margin.left, width - margin.right]);
+        .range([margin.left + strokeWidth/2, width - margin.right]);
 
       svg
         .append("g")
@@ -133,10 +134,12 @@ export default {
             .tickArguments([d3.timeDay.every(1)])
             .tickFormat(d3.timeFormat("%a %d"))
         )
+        .attr("color", "#333333")
         .selectAll("text")
         .style("text-anchor", "end")
         .attr("dx", "-.8em")
         .attr("dy", ".15em")
+        .attr("font-size", "5pt")
         .attr("transform", "rotate(-65)");
 
       // Y AXIS
@@ -155,7 +158,11 @@ export default {
       svg
         .append("g")
         .attr("transform", `translate(${margin.left}, 0)`)
-        .call(d3.axisLeft(y).ticks(3));
+        .call(d3.axisLeft(y).ticks(3))
+        .attr("color", "#333333")
+        .selectAll("text")
+        .attr("font-size", "5pt")
+
 
       // Add the line
       svg
@@ -163,7 +170,7 @@ export default {
         .datum(formattedData)
         .attr("fill", "#cce5df")
         .attr("stroke", "#69b3a2")
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", strokeWidth)
         .attr(
           "d",
           d3
@@ -193,17 +200,5 @@ export default {
 
 
 <style scoped>
-h3 {
-  font-family: "Courier New", Courier, monospace;
-  font-weight: bold;
-  padding: 0;
-  margin: 0;
-}
-p {
-  font-family: "Courier New", Courier, monospace;
-  font-weight: bold;
-  padding: 0;
-  margin: 0;
-  font-size: 9pt;
-}
+
 </style>
