@@ -9,13 +9,13 @@
         <div id="cool-graph"></div>
                 <v-row>
             <v-col cols="12" sm="4">
-              <v-card-text><span class="font-weight-bold">Min:</span> {{ minFromD3 }}</v-card-text>
+              <v-card-text><span class="font-weight-bold"><v-icon>mdi-code-less-than</v-icon> Min:</span> {{ minFromD3 }}</v-card-text>
             </v-col>
             <v-col cols="12" sm="4">
-              <v-card-text><span class="font-weight-bold">Mean:</span> {{ meanFromD3 }}</v-card-text>
+              <v-card-text><span class="font-weight-bold"><v-icon>mdi-approximately-equal-box</v-icon> Mean:</span> {{ meanFromD3 }}</v-card-text>
             </v-col>
             <v-col cols="12" sm="4">
-              <v-card-text><span class="font-weight-bold">Max:</span> {{ maxFromD3 }}</v-card-text>
+              <v-card-text><span class="font-weight-bold"><v-icon>mdi-code-greater-than</v-icon> Max:</span> {{ maxFromD3 }}</v-card-text>
             </v-col>
           </v-row>
         <v-card-text class="pt-0"
@@ -188,7 +188,7 @@ export default {
             .y1(function (d) {
               return y(d.value);
             })
-            .curve(d3.curveMonotoneX)
+            .curve(d3.curveCatmullRom.alpha(0.5))
         );
     },
   },
