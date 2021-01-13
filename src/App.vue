@@ -1,23 +1,37 @@
 <template>
   <v-app id="app">
     <v-container>
-
       <v-card elevation="2" outlined>
         <v-card-title
           ><v-icon>mdi-chart-line</v-icon> Graph with d3:</v-card-title
         >
         <div id="cool-graph"></div>
-                <v-row>
-            <v-col cols="12" sm="4">
-              <v-card-text><span class="font-weight-bold"><v-icon>mdi-code-less-than</v-icon> Min:</span> {{ minFromD3 }}</v-card-text>
-            </v-col>
-            <v-col cols="12" sm="4">
-              <v-card-text><span class="font-weight-bold"><v-icon>mdi-approximately-equal-box</v-icon> Mean:</span> {{ meanFromD3 }}</v-card-text>
-            </v-col>
-            <v-col cols="12" sm="4">
-              <v-card-text><span class="font-weight-bold"><v-icon>mdi-code-greater-than</v-icon> Max:</span> {{ maxFromD3 }}</v-card-text>
-            </v-col>
-          </v-row>
+        <v-row>
+          <v-col cols="12" sm="4">
+            <v-card-text
+              ><span class="font-weight-bold"
+                ><v-icon>mdi-code-less-than</v-icon> Min:</span
+              >
+              {{ minFromD3 }}</v-card-text
+            >
+          </v-col>
+          <v-col cols="12" sm="4">
+            <v-card-text
+              ><span class="font-weight-bold"
+                ><v-icon>mdi-approximately-equal-box</v-icon> Mean:</span
+              >
+              {{ meanFromD3 }}</v-card-text
+            >
+          </v-col>
+          <v-col cols="12" sm="4">
+            <v-card-text
+              ><span class="font-weight-bold"
+                ><v-icon>mdi-code-greater-than</v-icon> Max:</span
+              >
+              {{ maxFromD3 }}</v-card-text
+            >
+          </v-col>
+        </v-row>
         <v-card-text class="pt-0"
           >This line chart displays an x-axis slanted tick for each day. The
           y-axis is from the lowest data value divided by 1.25 and reaches to
@@ -37,7 +51,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in array" :key="item.value">
+              <tr v-for="item in array" :key="item.date">
                 <td>{{ item }}</td>
               </tr>
             </tbody>
@@ -113,7 +127,7 @@ export default {
         .select("#cool-graph")
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 600 100")
+        .attr("viewBox", "0 0 600 100");
 
       // X AXIS
       let x = d3
@@ -123,7 +137,7 @@ export default {
             return d.date;
           })
         )
-        .range([margin.left + strokeWidth/2, width - margin.right]);
+        .range([margin.left + strokeWidth / 2, width - margin.right]);
 
       svg
         .append("g")
@@ -161,11 +175,10 @@ export default {
         .call(d3.axisLeft(y).ticks(3))
         .attr("color", "#333333")
         .selectAll("text")
-        .attr("font-size", "5pt")
-
+        .attr("font-size", "5pt");
 
       // Add the line
-      svg
+      let path = svg
         .append("path")
         .datum(formattedData)
         .attr("fill", "#cce5df")
@@ -190,6 +203,18 @@ export default {
             })
             .curve(d3.curveCatmullRom.alpha(0.5))
         );
+
+      // Draw line animation
+      let totalLength = path.node().getTotalLength();
+      path
+        .attr("stroke-dasharray", totalLength + " " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition() // Call Transition Method
+        .duration(2500) // Set Duration timing (ms)
+        .ease(d3.easeLinear) // Set Easing option
+        .attr("stroke-dashoffset", 0);
+
+
     },
   },
   mounted() {
@@ -200,5 +225,4 @@ export default {
 
 
 <style scoped>
-
 </style>
